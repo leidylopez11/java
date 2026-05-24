@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Competiciones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { background: white; border-radius: 20px; padding: 25px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .btn-volver { background: #6c757d; color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; }
+        .card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        .card-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 20px; font-weight: 600; }
+        .card-body { padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        input { width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 10px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .btn-warning { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
+        .btn-danger { background: linear-gradient(135deg, #fa709a, #fee140); color: white; }
+        .btn-sm { padding: 5px 10px; font-size: 12px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f8f9fa; }
+        .badge { background: #e0e0e0; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+        .acciones { display: flex; gap: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-trophy"></i> Gestión de Competiciones</h1>
+            <a href="/" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver al Inicio</a>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span th:text="${competicion != null and competicion.id != null} ? 'Editar Competición' : 'Nueva Competición'">Nueva Competición</span></div>
+            <div class="card-body">
+                <form th:action="${competicion != null and competicion.id != null} ? @{/competiciones/actualizar/{id}(id=${competicion.id})} : @{/competiciones/guardar}" method="post">
+                    <div class="form-group"><input type="text" name="nombre" th:value="${competicion.nombre}" placeholder="Nombre" required/></div>
+                    <div class="form-group"><input type="number" name="montoPremio" th:value="${competicion.montoPremio}" placeholder="Premio USD" required/></div>
+					<div class="form-group">
+					  
+					    <input type="text" name="fechaInicio" th:value="${competicion != null ? competicion.fechaInicio : '2025-01-01'}" placeholder="Ej: 2025-02-15" required/>
+					</div>
+
+					<div class="form-group">
+					    
+					    <input type="text" name="fechaFin" th:value="${competicion != null ? competicion.fechaFin : '2025-12-31'}" placeholder="Ej: 2025-11-30" required/>
+					</div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                    <a th:if="${competicion != null and competicion.id != null}" href="/competiciones" class="btn" style="background:#6c757d;color:white;">Cancelar</a>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><i class="fas fa-list"></i> Lista de Competiciones</div>
+            <div class="card-body">
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Nombre</th><th>Premio USD</th><th>Fecha Inicio</th><th>Fecha Fin</th><th>Acciones</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="comp : ${competiciones}">
+                            <td><span class="badge" th:text="${comp.id}">1</span></td>
+                            <td th:text="${comp.nombre}">Nombre</td>
+                            <td th:text="'$' + ${comp.montoPremio}">Premio</td>
+                            <td th:text="${comp.fechaInicio}">Inicio</td>
+                            <td th:text="${comp.fechaFin}">Fin</td>
+                            <td class="acciones">
+                                <a th:href="@{/competiciones/editar/{id}(id=${comp.id})}"><button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Editar</button></a>
+                                <a th:href="@{/competiciones/eliminar/{id}(id=${comp.id})}" onclick="return confirm('¿Eliminar?')"><button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Eliminar</button></a>
+                            </td>
+                        </tr>
+                        <tr th:if="${competiciones.empty}"><td colspan="6">No hay competiciones</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

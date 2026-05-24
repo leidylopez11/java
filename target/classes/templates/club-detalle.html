@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Club</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { background: white; border-radius: 20px; padding: 25px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .btn-volver { background: #6c757d; color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; }
+        .card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        .card-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 20px; font-weight: 600; }
+        .card-body { padding: 20px; }
+        select, input { width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 10px; margin-bottom: 10px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .btn-success { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; }
+        .btn-danger { background: linear-gradient(135deg, #fa709a, #fee140); color: white; }
+        .btn-sm { padding: 5px 10px; font-size: 12px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f8f9fa; }
+        .badge { background: #e0e0e0; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+        hr { margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-info-circle"></i> Detalle del Club</h1>
+            <a href="/clubes" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver a Clubes</a>
+        </div>
+
+        <!-- DATOS DEL CLUB -->
+        <div class="card" th:if="${clubDetalle != null}">
+            <div class="card-header"><i class="fas fa-shield-alt"></i> Información del Club</div>
+            <div class="card-body">
+                <p><strong>Nombre:</strong> <span th:text="${clubDetalle.nombre}"></span></p>
+                <p><strong>Ciudad:</strong> <span th:text="${clubDetalle.ciudad}"></span></p>
+                <p><strong>Año Fundación:</strong> <span th:text="${clubDetalle.anioFundacion}"></span></p>
+                <p><strong>ID:</strong> <span id="clubId" th:text="${clubDetalle.id}"></span></p>
+            </div>
+        </div>
+
+        <div th:if="${clubDetalle == null}">
+            <div class="card">
+                <div class="card-body">
+                    <p>Club no encontrado</p>
+                    <a href="/clubes">Volver a la lista</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- OneToOne: ENTRENADOR -->
+        <div class="card" th:if="${clubDetalle != null}">
+            <div class="card-header"><i class="fas fa-chalkboard-user"></i> Entrenador (OneToOne)</div>
+            <div class="card-body">
+                <p><strong>Actual:</strong> 
+                    <span th:if="${clubDetalle.entrenador != null}" th:text="${clubDetalle.entrenador.nombre} + ' ' + ${clubDetalle.entrenador.apellido}"></span>
+                    <span th:if="${clubDetalle.entrenador == null}" class="badge">Sin entrenador</span>
+                </p>
+                <hr>
+                
+                <select id="entrenadorSelect" style="width: 70%; padding: 10px;">
+                    <option value="">-- Seleccionar entrenador --</option>
+                    <option th:each="e : ${entrenadores}" th:value="${e.id}" th:text="${e.nombre} + ' ' + ${e.apellido}"></option>
+                </select>
+                <button class="btn btn-primary" onclick="asignarEntrenador()">Asignar</button>
+            </div>
+        </div>
+
+        <!-- ManyToOne: ASOCIACIÓN -->
+        <div class="card" th:if="${clubDetalle != null}">
+            <div class="card-header"><i class="fas fa-building"></i> Asociación (ManyToOne)</div>
+            <div class="card-body">
+                <p><strong>Actual:</strong> 
+                    <span th:if="${clubDetalle.asociacion != null}" th:text="${clubDetalle.asociacion.nombre}"></span>
+                    <span th:if="${clubDetalle.asociacion == null}" class="badge">Sin asociación</span>
+                </p>
+                <hr>
+                
+                <select id="asociacionSelect" style="width: 70%; padding: 10px;">
+                    <option value="">-- Seleccionar asociación --</option>
+                    <option th:each="a : ${asociaciones}" th:value="${a.id}" th:text="${a.nombre}"></option>
+                </select>
+                <button class="btn btn-primary" onclick="asignarAsociacion()">Asignar</button>
+            </div>
+        </div>
+
+        <!-- OneToMany: JUGADORES -->
+        <div class="card" th:if="${clubDetalle != null}">
+            <div class="card-header"><i class="fas fa-user-friends"></i> Jugadores (OneToMany)</div>
+            <div class="card-body">
+                <table>
+                    <thead>
+                        <tr><th>Nombre</th><th>Número</th><th>Posición</th><th>Acción</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="j : ${clubDetalle.jugadores}">
+                            <td th:text="${j.nombre} + ' ' + ${j.apellido}">-</td>
+                            <td th:text="${j.numero}">-</td>
+                            <td th:text="${j.posicion}">-</td>
+                            <td><a th:href="@{/clubes/remover-jugador/{clubId}/{jugadorId}(clubId=${clubDetalle.id}, jugadorId=${j.id})}" class="btn btn-danger btn-sm">Remover</a></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(clubDetalle.jugadores)}">
+                            <td colspan="4">No hay jugadores</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                
+                <select id="jugadorSelect" style="width: 70%; padding: 10px;">
+                    <option value="">-- Agregar jugador --</option>
+                    <option th:each="j : ${jugadores}" th:value="${j.id}" th:text="${j.nombre} + ' ' + ${j.apellido} + ' (#' + ${j.numero} + ')'"></option>
+                </select>
+                <button class="btn btn-success" onclick="agregarJugador()">Agregar</button>
+            </div>
+        </div>
+
+        <!-- ManyToMany: COMPETICIONES -->
+        <div class="card" th:if="${clubDetalle != null}">
+            <div class="card-header"><i class="fas fa-trophy"></i> Competiciones (ManyToMany)</div>
+            <div class="card-body">
+                <table>
+                    <thead>
+                        <tr><th>Nombre</th><th>Premio</th><th>Acción</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="comp : ${clubDetalle.competiciones}">
+                            <td th:text="${comp.nombre}">-</td>
+                            <td th:text="'$' + ${comp.montoPremio}">-</td>
+                            <td><a th:href="@{/clubes/remover-competicion/{clubId}/{competicionId}(clubId=${clubDetalle.id}, competicionId=${comp.id})}" class="btn btn-danger btn-sm">Remover</a></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(clubDetalle.competiciones)}">
+                            <td colspan="3">No hay competiciones</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                
+                <select id="competicionSelect" style="width: 70%; padding: 10px;">
+                    <option value="">-- Agregar competición --</option>
+                    <option th:each="comp : ${competiciones}" th:value="${comp.id}" th:text="${comp.nombre}"></option>
+                </select>
+                <button class="btn btn-success" onclick="agregarCompeticion()">Agregar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getClubId() {
+            var clubIdSpan = document.getElementById('clubId');
+            if (clubIdSpan) {
+                return clubIdSpan.innerText;
+            }
+            return null;
+        }
+
+        function asignarEntrenador() {
+            var select = document.getElementById('entrenadorSelect');
+            var entrenadorId = select.value;
+            var clubId = getClubId();
+            if (entrenadorId && clubId) {
+                window.location.href = '/clubes/asignar-entrenador/' + clubId + '/' + entrenadorId;
+            } else {
+                alert('Selecciona un entrenador');
+            }
+        }
+
+        function asignarAsociacion() {
+            var select = document.getElementById('asociacionSelect');
+            var asociacionId = select.value;
+            var clubId = getClubId();
+            if (asociacionId && clubId) {
+                window.location.href = '/clubes/asignar-asociacion/' + clubId + '/' + asociacionId;
+            } else {
+                alert('Selecciona una asociación');
+            }
+        }
+
+        function agregarJugador() {
+            var select = document.getElementById('jugadorSelect');
+            var jugadorId = select.value;
+            var clubId = getClubId();
+            if (jugadorId && clubId) {
+                window.location.href = '/clubes/agregar-jugador/' + clubId + '/' + jugadorId;
+            } else {
+                alert('Selecciona un jugador');
+            }
+        }
+
+        function agregarCompeticion() {
+            var select = document.getElementById('competicionSelect');
+            var competicionId = select.value;
+            var clubId = getClubId();
+            if (competicionId && clubId) {
+                window.location.href = '/clubes/agregar-competicion/' + clubId + '/' + competicionId;
+            } else {
+                alert('Selecciona una competición');
+            }
+        }
+    </script>
+</body>
+</html>
