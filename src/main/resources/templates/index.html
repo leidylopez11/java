@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Clubes - Inicio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .menu-container {
+            max-width: 1200px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            font-size: 3em;
+        }
+        h1 i {
+            margin-right: 15px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: #333;
+            display: block;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .card i {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+        .card h2 {
+            margin-bottom: 10px;
+        }
+        .card p {
+            color: #666;
+            font-size: 14px;
+        }
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-container">
+        <h1><i class="fas fa-futbol"></i> Sistema de Gestión de Clubes</h1>
+        <div class="grid">
+            <a href="/clubes" class="card">
+                <i class="fas fa-shield-alt"></i>
+                <h2>Clubes</h2>
+                <p>Gestionar clubes y sus relaciones (OneToOne, OneToMany, ManyToOne, ManyToMany)</p>
+            </a>
+            <a href="/entrenadores" class="card">
+                <i class="fas fa-chalkboard-user"></i>
+                <h2>Entrenadores</h2>
+                <p>CRUD completo de entrenadores (OneToOne)</p>
+            </a>
+            <a href="/jugadores" class="card">
+                <i class="fas fa-user-friends"></i>
+                <h2>Jugadores</h2>
+                <p>CRUD completo de jugadores (OneToMany)</p>
+            </a>
+            <a href="/asociaciones" class="card">
+                <i class="fas fa-building"></i>
+                <h2>Asociaciones</h2>
+                <p>CRUD completo de asociaciones (ManyToOne)</p>
+            </a>
+            <a href="/competiciones" class="card">
+                <i class="fas fa-trophy"></i>
+                <h2>Competiciones</h2>
+                <p>CRUD completo de competiciones (ManyToMany)</p>
+            </a>
+            <a href="/h2-console" target="_blank" class="card">
+                <i class="fas fa-database"></i>
+                <h2>Base de Datos H2</h2>
+                <p>Ver y consultar la base de datos</p>
+            </a>
+        </div>
+        <div class="footer">
+            <p>Relaciones JPA: OneToOne | OneToMany | ManyToOne | ManyToMany</p>
+        </div>
+    </div>
+</body>
+</html>

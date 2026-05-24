@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Asociaciones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { background: white; border-radius: 20px; padding: 25px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .btn-volver { background: #6c757d; color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; }
+        .card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        .card-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 20px; font-weight: 600; }
+        .card-body { padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        input { width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 10px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .btn-warning { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
+        .btn-danger { background: linear-gradient(135deg, #fa709a, #fee140); color: white; }
+        .btn-sm { padding: 5px 10px; font-size: 12px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f8f9fa; }
+        .badge { background: #e0e0e0; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+        .acciones { display: flex; gap: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-building"></i> Gestión de Asociaciones</h1>
+            <a href="/" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver al Inicio</a>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span th:text="${asociacion != null and asociacion.id != null} ? 'Editar Asociación' : 'Nueva Asociación'">Nueva Asociación</span></div>
+            <div class="card-body">
+                <form th:action="${asociacion != null and asociacion.id != null} ? @{/asociaciones/actualizar/{id}(id=${asociacion.id})} : @{/asociaciones/guardar}" method="post">
+                    <div class="form-group"><input type="text" name="nombre" th:value="${asociacion.nombre}" placeholder="Nombre" required/></div>
+                    <div class="form-group"><input type="text" name="pais" th:value="${asociacion.pais}" placeholder="País" required/></div>
+                    <div class="form-group"><input type="text" name="presidente" th:value="${asociacion.presidente}" placeholder="Presidente" required/></div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                    <a th:if="${asociacion != null and asociacion.id != null}" href="/asociaciones" class="btn" style="background:#6c757d;color:white;">Cancelar</a>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><i class="fas fa-list"></i> Lista de Asociaciones</div>
+            <div class="card-body">
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Nombre</th><th>País</th><th>Presidente</th><th>Acciones</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="a : ${asociaciones}">
+                            <td><span class="badge" th:text="${a.id}">1</span></td>
+                            <td th:text="${a.nombre}">Nombre</td>
+                            <td th:text="${a.pais}">País</td>
+                            <td th:text="${a.presidente}">Presidente</td>
+                            <td class="acciones">
+                                <a th:href="@{/asociaciones/editar/{id}(id=${a.id})}"><button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Editar</button></a>
+                                <a th:href="@{/asociaciones/eliminar/{id}(id=${a.id})}" onclick="return confirm('¿Eliminar?')"><button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Eliminar</button></a>
+                            </td>
+                        </tr>
+                        <tr th:if="${asociaciones.empty}"><td colspan="5">No hay asociaciones</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
