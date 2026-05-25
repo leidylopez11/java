@@ -2,124 +2,193 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Clubes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Deportiva | Clubes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 2rem;
         }
         .container { max-width: 1400px; margin: 0 auto; }
         .header {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        .header h1 i { margin-right: 10px; color: #667eea; }
+        .header-left h1 { font-size: 1.5rem; font-weight: 600; color: white; }
+        .header-left h1 i { color: #3b82f6; margin-right: 0.5rem; }
+        .header-left p { color: #94a3b8; font-size: 0.875rem; margin-top: 0.25rem; }
         .btn-volver {
-            background: #6c757d;
+            background: rgba(255,255,255,0.05);
             color: white;
-            padding: 10px 20px;
-            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
             text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
         }
-        .btn-volver:hover { background: #5a6268; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; margin-bottom: 30px; }
-        .card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        .card-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 20px; font-weight: 600; }
-        .card-header i { margin-right: 10px; }
-        .card-body { padding: 20px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: 500; color: #555; font-size: 14px; }
-        input, select { width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 10px; }
+        .btn-volver:hover { background: rgba(255,255,255,0.1); }
+        .card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 1rem 1.5rem;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .card-header h2 { font-size: 1rem; font-weight: 600; color: white; text-transform: uppercase; letter-spacing: 1px; }
+        .card-header h2 i { color: #3b82f6; margin-right: 0.5rem; }
+        .card-body { padding: 1.5rem; }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #94a3b8;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.5rem;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(255,255,255,0.08);
+        }
         .btn {
-            padding: 10px 20px;
+            padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: 10px;
+            border-radius: 0.5rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
             text-decoration: none;
         }
-        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-        .btn-success { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; }
-        .btn-warning { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
-        .btn-danger { background: linear-gradient(135deg, #fa709a, #fee140); color: white; }
-        .btn-info { background: linear-gradient(135deg, #4facfe, #00f2fe); color: white; }
-        .btn-sm { padding: 6px 12px; font-size: 12px; }
+        .btn-primary { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59,130,246,0.3); }
+        .btn-secondary { background: rgba(255,255,255,0.05); color: #94a3b8; }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); color: white; }
+        .btn-sm { padding: 0.4rem 0.75rem; font-size: 0.75rem; }
+        .btn-info { background: #0ea5e9; color: white; }
+        .btn-warning { background: #f59e0b; color: white; }
+        .btn-danger { background: #ef4444; color: white; }
+        .table-wrapper { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
-        th { background: #f8f9fa; padding: 12px; text-align: left; }
-        td { padding: 12px; border-bottom: 1px solid #e0e0e0; }
-        .badge { background: #e0e0e0; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
-        .badge-info { background: #d1ecf1; color: #0c5460; }
-        .badge-success { background: #d4edda; color: #155724; }
-        .acciones { display: flex; gap: 8px; flex-wrap: wrap; }
-        .footer { text-align: center; padding: 20px; color: white; }
+        th { text-align: left; padding: 0.75rem; color: #94a3b8; font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        td { padding: 0.75rem; color: white; font-size: 0.875rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 100px; font-size: 0.7rem; font-weight: 500; background: rgba(255,255,255,0.1); color: #94a3b8; }
+        .badge-info { background: rgba(14,165,233,0.15); color: #38bdf8; }
+        .badge-success { background: rgba(34,197,94,0.15); color: #4ade80; }
+        .acciones { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .mensaje-vacio { text-align: center; padding: 2rem; color: #64748b; }
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .acciones { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1><i class="fas fa-shield-alt"></i> Gestión de Clubes</h1>
-            <a href="/" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver al Inicio</a>
+            <div class="header-left">
+                <h1><i class="fas fa-shield-alt"></i> Clubes</h1>
+                <p>Gestión de clubes deportivos y sus relaciones</p>
+            </div>
+            <a href="/" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
         </div>
 
-        <!-- Formulario Club -->
-        <div class="grid">
-            <div class="card">
-                <div class="card-header"><i class="fas fa-shield-alt"></i> <span th:text="${club != null and club.id != null} ? 'Editar Club' : 'Nuevo Club'">Nuevo Club</span></div>
-                <div class="card-body">
-                    <form th:action="${club != null and club.id != null} ? @{/clubes/actualizar/{id}(id=${club.id})} : @{/clubes/guardar}" method="post">
-                        <div class="form-group"><label>Nombre:</label><input type="text" name="nombre" th:value="${club.nombre}" required/></div>
-                        <div class="form-group"><label>Ciudad:</label><input type="text" name="ciudad" th:value="${club.ciudad}" required/></div>
-                        <div class="form-group"><label>Año Fundación:</label><input type="number" name="anioFundacion" th:value="${club.anioFundacion}" required/></div>
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
-                        <a th:if="${club != null and club.id != null}" href="/clubes" class="btn" style="background:#6c757d;color:white;">Cancelar</a>
-                    </form>
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-plus-circle"></i> <span th:text="${club != null and club.id != null} ? 'Editar Club' : 'Nuevo Club'">Nuevo Club</span></h2>
+            </div>
+            <div class="card-body">
+                <form th:action="${club != null and club.id != null} ? @{/clubes/actualizar/{id}(id=${club.id})} : @{/clubes/guardar}" method="post">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>NOMBRE DEL CLUB</label>
+                            <input type="text" name="nombre" th:value="${club.nombre}" placeholder="Ej: Millonarios FC" required/>
+                        </div>
+                        <div class="form-group">
+                            <label>CIUDAD</label>
+                            <input type="text" name="ciudad" th:value="${club.ciudad}" placeholder="Ej: Bogotá" required/>
+                        </div>
+                        <div class="form-group">
+                            <label>AÑO DE FUNDACIÓN</label>
+                            <input type="number" name="anioFundacion" th:value="${club.anioFundacion}" placeholder="Ej: 1946" required/>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <span th:text="${club != null and club.id != null} ? 'Actualizar Club' : 'Guardar Club'">Guardar Club</span></button>
+                        <a th:if="${club != null and club.id != null}" href="/clubes" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-list"></i> Lista de Clubes</h2>
+            </div>
+            <div class="card-body">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th>ID</th><th>Club</th><th>Ciudad</th><th>Entrenador</th><th>Asociación</th><th>Jugadores</th><th>Competiciones</th><th>Acciones</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="c : ${clubes}">
+                                <td><span class="badge" th:text="${c.id}">1</span></td>
+                                <td><strong th:text="${c.nombre}"></strong><br/><small style="color:#94a3b8;" th:text="${c.ciudad} + ' - ' + ${c.anioFundacion}"></small></td>
+                                <td th:text="${c.ciudad}">-</td>
+                                <td><span th:if="${c.entrenador != null}" th:text="${c.entrenador.nombre} + ' ' + ${c.entrenador.apellido}"></span><span th:if="${c.entrenador == null}" class="badge">Sin entrenador</span></td>
+                                <td><span th:if="${c.asociacion != null}" th:text="${c.asociacion.nombre}"></span><span th:if="${c.asociacion == null}" class="badge">Sin asociación</span></td>
+                                <td><span class="badge badge-info" th:text="${#lists.size(c.jugadores)} + ' jugadores'">0</span></td>
+                                <td><span class="badge badge-success" th:text="${#lists.size(c.competiciones)} + ' competiciones'">0</span></td>
+                                <td class="acciones">
+                                    <a th:href="@{/clubes/ver/{id}(id=${c.id})}"><button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i> Ver</button></a>
+                                    <a th:href="@{/clubes/editar/{id}(id=${c.id})}"><button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Editar</button></a>
+                                    <a th:href="@{/clubes/eliminar/{id}(id=${c.id})}" onclick="return confirm('¿Eliminar este club?')"><button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Eliminar</button></a>
+                                </td>
+                            </tr>
+                            <tr th:if="${clubes.empty}"><td colspan="8" class="mensaje-vacio">No hay clubes registrados. ¡Crea uno!</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-
-        <!-- Lista de Clubes -->
-        <div class="card">
-            <div class="card-header"><i class="fas fa-list"></i> Lista de Clubes</div>
-            <div class="card-body">
-                <table>
-                    <thead><tr><th>ID</th><th>Club</th><th>Ciudad</th><th>Año</th><th>Entrenador</th><th>Asociación</th><th>Jugadores</th><th>Competiciones</th><th>Acciones</th></tr></thead>
-                    <tbody>
-                        <tr th:each="c : ${clubes}">
-                            <td><span class="badge" th:text="${c.id}">1</span></td>
-                            <td><strong th:text="${c.nombre}"></strong></td>
-                            <td th:text="${c.ciudad}"></td>
-                            <td th:text="${c.anioFundacion}"></td>
-                            <td><span th:if="${c.entrenador != null}" th:text="${c.entrenador.nombre} + ' ' + ${c.entrenador.apellido}"></span><span th:if="${c.entrenador == null}" class="badge">Sin entrenador</span></td>
-                            <td><span th:if="${c.asociacion != null}" th:text="${c.asociacion.nombre}"></span><span th:if="${c.asociacion == null}" class="badge">Sin asociación</span></td>
-                            <td><span class="badge badge-info" th:text="${#lists.size(c.jugadores)} + ' jugadores'">0</span></td>
-                            <td><span class="badge badge-success" th:text="${#lists.size(c.competiciones)} + ' competiciones'">0</span></td>
-                            <td class="acciones">
-                                <a th:href="@{/clubes/ver/{id}(id=${c.id})}"><button class="btn btn-info btn-sm"><i class="fas fa-eye"></i> Ver</button></a>
-                                <a th:href="@{/clubes/editar/{id}(id=${c.id})}"><button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Editar</button></a>
-                                <a th:href="@{/clubes/eliminar/{id}(id=${c.id})}" onclick="return confirm('¿Eliminar?')"><button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Eliminar</button></a>
-                            </td>
-                        </tr>
-                        <tr th:if="${clubes.empty}"><td colspan="9">No hay clubes registrados</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="footer"><a href="/h2-console" target="_blank" style="color:white;">🔍 Ver Base de Datos H2</a></div>
     </div>
 </body>
 </html>
