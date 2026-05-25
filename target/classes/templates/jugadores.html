@@ -2,83 +2,103 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Jugadores</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Deportiva | Jugadores</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); min-height: 100vh; padding: 2rem; }
         .container { max-width: 1200px; margin: 0 auto; }
-        .header { background: white; border-radius: 20px; padding: 25px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-        .btn-volver { background: #6c757d; color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; }
-        .card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 25px; }
-        .card-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 20px; font-weight: 600; }
-        .card-body { padding: 20px; }
-        .form-group { margin-bottom: 15px; }
-        input, select { width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 10px; }
-        .btn { padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
-        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-        .btn-warning { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
-        .btn-danger { background: linear-gradient(135deg, #fa709a, #fee140); color: white; }
-        .btn-sm { padding: 5px 10px; font-size: 12px; }
+        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .header-left h1 { font-size: 1.5rem; font-weight: 600; color: white; }
+        .header-left h1 i { color: #3b82f6; margin-right: 0.5rem; }
+        .header-left p { color: #94a3b8; font-size: 0.875rem; margin-top: 0.25rem; }
+        .btn-volver { background: rgba(255,255,255,0.05); color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; font-size: 0.875rem; transition: all 0.2s ease; }
+        .btn-volver:hover { background: rgba(255,255,255,0.1); }
+        .card { background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); border-radius: 1rem; margin-bottom: 1.5rem; overflow: hidden; }
+        .card-header { padding: 1rem 1.5rem; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .card-header h2 { font-size: 1rem; font-weight: 600; color: white; text-transform: uppercase; letter-spacing: 1px; }
+        .card-header h2 i { color: #3b82f6; margin-right: 0.5rem; }
+        .card-body { padding: 1.5rem; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 500; color: #94a3b8; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group input, .form-group select { width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: white; font-family: 'Inter', sans-serif; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: #3b82f6; background: rgba(255,255,255,0.08); }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'Inter', sans-serif; text-decoration: none; }
+        .btn-primary { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59,130,246,0.3); }
+        .btn-secondary { background: rgba(255,255,255,0.05); color: #94a3b8; }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); color: white; }
+        .btn-sm { padding: 0.4rem 0.75rem; font-size: 0.75rem; }
+        .btn-warning { background: #f59e0b; color: white; }
+        .btn-danger { background: #ef4444; color: white; }
+        .table-wrapper { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; }
-        th { background: #f8f9fa; }
-        .badge { background: #e0e0e0; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
-        .acciones { display: flex; gap: 8px; }
+        th { text-align: left; padding: 0.75rem; color: #94a3b8; font-weight: 500; font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        td { padding: 0.75rem; color: white; font-size: 0.875rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 100px; font-size: 0.7rem; background: rgba(255,255,255,0.1); color: #94a3b8; }
+        .acciones { display: flex; gap: 0.5rem; }
+        .mensaje-vacio { text-align: center; padding: 2rem; color: #64748b; }
+        @media (max-width: 768px) { body { padding: 1rem; } .form-grid { grid-template-columns: 1fr; } .acciones { flex-direction: column; } }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1><i class="fas fa-user-friends"></i> Gestión de Jugadores</h1>
-            <a href="/" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver al Inicio</a>
+            <div class="header-left">
+                <h1><i class="fas fa-user-friends"></i> Jugadores</h1>
+                <p>Gestión del plantel de jugadores</p>
+            </div>
+            <a href="/" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
         </div>
 
         <div class="card">
-            <div class="card-header"><span th:text="${jugador != null and jugador.id != null} ? 'Editar Jugador' : 'Nuevo Jugador'">Nuevo Jugador</span></div>
+            <div class="card-header"><h2><i class="fas fa-plus-circle"></i> <span th:text="${jugador != null and jugador.id != null} ? 'Editar Jugador' : 'Nuevo Jugador'">Nuevo Jugador</span></h2></div>
             <div class="card-body">
                 <form th:action="${jugador != null and jugador.id != null} ? @{/jugadores/actualizar/{id}(id=${jugador.id})} : @{/jugadores/guardar}" method="post">
-                    <div class="form-group"><input type="text" name="nombre" th:value="${jugador.nombre}" placeholder="Nombre" required/></div>
-                    <div class="form-group"><input type="text" name="apellido" th:value="${jugador.apellido}" placeholder="Apellido" required/></div>
-                    <div class="form-group"><input type="number" name="numero" th:value="${jugador.numero}" placeholder="Número" required/></div>
-                    <div class="form-group">
-                        <select name="posicion" required>
-                            <option value="">Seleccionar Posición</option>
-                            <option th:selected="${jugador != null and jugador.posicion == 'Portero'}" value="Portero">Portero</option>
-                            <option th:selected="${jugador != null and jugador.posicion == 'Defensa'}" value="Defensa">Defensa</option>
-                            <option th:selected="${jugador != null and jugador.posicion == 'Mediocampista'}" value="Mediocampista">Mediocampista</option>
-                            <option th:selected="${jugador != null and jugador.posicion == 'Delantero'}" value="Delantero">Delantero</option>
-                        </select>
+                    <div class="form-grid">
+                        <div class="form-group"><label>NOMBRE</label><input type="text" name="nombre" th:value="${jugador.nombre}" placeholder="Ej: Luis" required/></div>
+                        <div class="form-group"><label>APELLIDO</label><input type="text" name="apellido" th:value="${jugador.apellido}" placeholder="Ej: Díaz" required/></div>
+                        <div class="form-group"><label>NÚMERO</label><input type="number" name="numero" th:value="${jugador.numero}" placeholder="Ej: 7" required/></div>
+                        <div class="form-group">
+                            <label>POSICIÓN</label>
+                            <select name="posicion" required>
+                                <option value="">Seleccionar</option>
+                                <option th:selected="${jugador != null and jugador.posicion == 'Portero'}" value="Portero">Portero</option>
+                                <option th:selected="${jugador != null and jugador.posicion == 'Defensa'}" value="Defensa">Defensa</option>
+                                <option th:selected="${jugador != null and jugador.posicion == 'Mediocampista'}" value="Mediocampista">Mediocampista</option>
+                                <option th:selected="${jugador != null and jugador.posicion == 'Delantero'}" value="Delantero">Delantero</option>
+                            </select>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
-                    <a th:if="${jugador != null and jugador.id != null}" href="/jugadores" class="btn" style="background:#6c757d;color:white;">Cancelar</a>
+                    <div style="margin-top: 1rem;">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                        <a th:if="${jugador != null and jugador.id != null}" href="/jugadores" class="btn btn-secondary">Cancelar</a>
+                    </div>
                 </form>
             </div>
         </div>
 
         <div class="card">
-            <div class="card-header"><i class="fas fa-list"></i> Lista de Jugadores</div>
+            <div class="card-header"><h2><i class="fas fa-list"></i> Lista de Jugadores</h2></div>
             <div class="card-body">
-                <table>
-                    <thead>
-                        <tr><th>ID</th><th>Nombre</th><th>Apellido</th><th>Número</th><th>Posición</th><th>Acciones</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="j : ${jugadores}">
-                            <td><span class="badge" th:text="${j.id}">1</span></td>
-                            <td th:text="${j.nombre}">Nombre</td>
-                            <td th:text="${j.apellido}">Apellido</td>
-                            <td><span class="badge" th:text="'#' + ${j.numero}"></span></td>
-                            <td th:text="${j.posicion}">Posición</td>
-                            <td class="acciones">
-                                <a th:href="@{/jugadores/editar/{id}(id=${j.id})}"><button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Editar</button></a>
-                                <a th:href="@{/jugadores/eliminar/{id}(id=${j.id})}" onclick="return confirm('¿Eliminar?')"><button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Eliminar</button></a>
-                            </td>
-                        </tr>
-                        <tr th:if="${jugadores.empty}"><td colspan="6">No hay jugadores</td></tr>
-                    </tbody>
-                </table>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>ID</th><th>Nombre</th><th>Apellido</th><th>Número</th><th>Posición</th><th>Acciones</th></tr></thead>
+                        <tbody>
+                            <tr th:each="j : ${jugadores}">
+                                <td><span class="badge" th:text="${j.id}">1</span></td>
+                                <td th:text="${j.nombre}">-</td><td th:text="${j.apellido}">-</td><td th:text="${j.numero}">-</td><td th:text="${j.posicion}">-</td>
+                                <td class="acciones">
+                                    <a th:href="@{/jugadores/editar/{id}(id=${j.id})}"><button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Editar</button></a>
+                                    <a th:href="@{/jugadores/eliminar/{id}(id=${j.id})}" onclick="return confirm('¿Eliminar este jugador?')"><button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Eliminar</button></a>
+                                </td>
+                            </tr>
+                            <tr th:if="${jugadores.empty}"><td colspan="6" class="mensaje-vacio">No hay jugadores registrados</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

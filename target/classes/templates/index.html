@@ -2,110 +2,181 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Sistema de Clubes - Inicio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Deportiva | Inicio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            padding: 2rem;
         }
-        .menu-container {
-            max-width: 1200px;
-            width: 100%;
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
         }
-        h1 {
+        .header {
             text-align: center;
-            color: white;
-            margin-bottom: 50px;
-            font-size: 3em;
+            margin-bottom: 3rem;
         }
-        h1 i {
-            margin-right: 15px;
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 2rem;
+            border-radius: 100px;
+            margin-bottom: 1.5rem;
+        }
+        .logo i {
+            font-size: 2rem;
+            color: #3b82f6;
+        }
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+        }
+        .header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+        .header p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
         .card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
             cursor: pointer;
             text-decoration: none;
-            color: #333;
             display: block;
         }
         .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transform: translateY(-8px);
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(59,130,246,0.3);
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.3);
         }
-        .card i {
-            font-size: 50px;
-            margin-bottom: 20px;
-            color: #667eea;
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
         }
-        .card h2 {
-            margin-bottom: 10px;
+        .card-icon i {
+            font-size: 1.75rem;
+            color: white;
+        }
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.5rem;
         }
         .card p {
-            color: #666;
-            font-size: 14px;
+            font-size: 0.875rem;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        .card-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.75rem;
+            background: rgba(59,130,246,0.15);
+            color: #60a5fa;
+            border-radius: 100px;
         }
         .footer {
             text-align: center;
-            color: white;
-            margin-top: 50px;
-            opacity: 0.8;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .footer p {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .header h2 { font-size: 1.75rem; }
+            .grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="menu-container">
-        <h1><i class="fas fa-futbol"></i> Sistema de Gestión de Clubes</h1>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-futbol"></i>
+                <h1>Gestión Deportiva</h1>
+            </div>
+            <h2>Sistema de Gestión de Clubes</h2>
+            <p>Administra clubes, entrenadores, jugadores y competiciones con relaciones JPA</p>
+        </div>
         <div class="grid">
             <a href="/clubes" class="card">
-                <i class="fas fa-shield-alt"></i>
-                <h2>Clubes</h2>
-                <p>Gestionar clubes y sus relaciones (OneToOne, OneToMany, ManyToOne, ManyToMany)</p>
+                <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Clubes</h3>
+                <p>Gestiona los clubes deportivos y sus relaciones con entrenadores, jugadores y competiciones.</p>
+                <span class="card-badge">OneToOne | OneToMany | ManyToOne | ManyToMany</span>
             </a>
             <a href="/entrenadores" class="card">
-                <i class="fas fa-chalkboard-user"></i>
-                <h2>Entrenadores</h2>
-                <p>CRUD completo de entrenadores (OneToOne)</p>
+                <div class="card-icon"><i class="fas fa-chalkboard-user"></i></div>
+                <h3>Entrenadores</h3>
+                <p>Administra el cuerpo técnico y asigna entrenadores a los clubes.</p>
+                <span class="card-badge">Relación OneToOne</span>
             </a>
             <a href="/jugadores" class="card">
-                <i class="fas fa-user-friends"></i>
-                <h2>Jugadores</h2>
-                <p>CRUD completo de jugadores (OneToMany)</p>
+                <div class="card-icon"><i class="fas fa-user-friends"></i></div>
+                <h3>Jugadores</h3>
+                <p>Gestiona el plantel de jugadores y su asignación a clubes.</p>
+                <span class="card-badge">Relación OneToMany</span>
             </a>
             <a href="/asociaciones" class="card">
-                <i class="fas fa-building"></i>
-                <h2>Asociaciones</h2>
-                <p>CRUD completo de asociaciones (ManyToOne)</p>
+                <div class="card-icon"><i class="fas fa-building"></i></div>
+                <h3>Asociaciones</h3>
+                <p>Administra las federaciones y asociaciones deportivas.</p>
+                <span class="card-badge">Relación ManyToOne</span>
             </a>
             <a href="/competiciones" class="card">
-                <i class="fas fa-trophy"></i>
-                <h2>Competiciones</h2>
-                <p>CRUD completo de competiciones (ManyToMany)</p>
-            </a>
-            <a href="/h2-console" target="_blank" class="card">
-                <i class="fas fa-database"></i>
-                <h2>Base de Datos H2</h2>
-                <p>Ver y consultar la base de datos</p>
+                <div class="card-icon"><i class="fas fa-trophy"></i></div>
+                <h3>Competiciones</h3>
+                <p>Gestiona torneos, copas y ligas.</p>
+                <span class="card-badge">Relación ManyToMany</span>
             </a>
         </div>
         <div class="footer">
-            <p>Relaciones JPA: OneToOne | OneToMany | ManyToOne | ManyToMany</p>
+            <p>Desarrollado con <i class="fas fa-heart" style="color: #ef4444;"></i> usando Spring Boot & PostgreSQL Neon</p>
         </div>
     </div>
 </body>
